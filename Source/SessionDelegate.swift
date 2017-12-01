@@ -177,6 +177,14 @@ open class SessionDelegate: NSObject {
             requests[task.taskIdentifier] = newValue
         }
     }
+    
+    open func cancelAllTasks() {
+        lock.lock() ; defer { lock.unlock() }
+        let networkRequests = requests.values
+        networkRequests.forEach { (request: Request) in
+            request.cancel()
+        }
+    }
 
     // MARK: Lifecycle
 
